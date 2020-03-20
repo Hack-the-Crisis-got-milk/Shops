@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/unicsmcr/hs_auth/environment"
+	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/zap"
@@ -46,5 +46,5 @@ func NewDatabase(logger *zap.Logger, env *environment.Env) (*mongo.Database, err
 	}
 	logger.Info("connected to database")
 
-	return client.Database("hs_auth"), nil
+	return client.Database(env.Get(environment.MongoDatabase)), nil
 }

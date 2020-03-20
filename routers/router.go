@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers/models"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -17,7 +18,7 @@ type mainRouter struct {
 }
 
 // NewMainRouter creates a new MainRouter
-func NewMainRouter(logger *zap.Logger) MainRouter {
+func NewMainRouter(logger *zap.Logger, repo *repositories.ItemGroupRepository) MainRouter {
 	return &mainRouter{
 		logger: logger,
 	}

@@ -25,12 +25,12 @@ mocks: clean-mocks
 
 # builds the executable
 build:
-	go build -o bin/hs_auth main.go
+	go build -o bin/shops main.go
 
 # builds the docker image
 build-docker:
-	@echo "=============building hs_auth============="
-	docker build -f docker/hs_auth/Dockerfile -t hs_auth . ;
+	@echo "=============building shops============="
+	docker build -f docker/shops/Dockerfile -t shops . ;
 
 # sets up the hacker suite docker network
 setup-network:
@@ -39,7 +39,7 @@ setup-network:
 
 # starts the app and MongoDB in docker containers
 up: vet build-docker setup-network
-	@echo "=============starting hs_auth============="
+	@echo "=============starting shops============="
 	docker-compose -f $(prod_docker_compose_file) up -d
 
 # starts the app and MongoDB in docker containers for dev environment
@@ -47,7 +47,7 @@ up-dev: export ENVIRONMENT=dev
 up-dev: export PORT=8000
 up-dev: export MONGO_HOST=127.0.0.1:8002
 up-dev: vet setup-network
-	@echo "=============starting hs_auth (dev)============="
+	@echo "=============starting shops (dev)============="
 	docker-compose -f $(dev_docker_compose_file) up -d
 	refresh run
 
@@ -61,7 +61,7 @@ endif
 
 # prints the logs only from the go app
 logs-app:
-	docker-compose -f $(prod_docker_compose_file) logs -f hs_auth
+	docker-compose -f $(prod_docker_compose_file) logs -f shops
 
 # prints the logs only from the database
 logs-db:
@@ -81,7 +81,7 @@ down:
 #          that are not being used
 clean: down
 	@echo "=============cleaning up============="
-	rm -f hs_auth
+	rm -f shops
 	docker container prune -f
 	docker network prune -f
 	docker system prune -f

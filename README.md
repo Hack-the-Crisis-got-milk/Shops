@@ -9,8 +9,8 @@
 
 ## Setting up:
 ```
-go get github.com/unicsmcr/hs_auth
-cd $GOROOT/src/github.com/unicsmcr/hs_auth
+go get github.com/Hack-the-Crisis-got-milk/Shops
+cd $GOROOT/src/github.com/Hack-the-Crisis-got-milk/Shops
 cp app.env.example app.env
 cp mongo.env.example mongo.env
 cp mongo_express.env.example mongo_express.env

@@ -17,6 +17,6 @@ build_path: /tmp
 # unnecessary builds, a delay is used to ignore extra events.
 build_delay: 200ms
 # What you would like to name the built binary.
-binary_name: hs_auth
+binary_name: shops
 # If you want colors to be used when printing out log messages.
 enable_colors: true

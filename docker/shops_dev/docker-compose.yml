@@ -39,7 +39,7 @@ services:
       - internal
 
 networks:
-  # internal network for hs_auth services
+  # internal network for shops services
   internal:
     driver: bridge
   # external network for consumer-facing hacker suite services

@@ -3,7 +3,7 @@ package utils
 import (
 	"os"
 
-	"github.com/unicsmcr/hs_auth/environment"
+	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
 	"go.uber.org/zap"
 )
 

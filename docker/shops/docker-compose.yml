@@ -1,14 +1,14 @@
 version: '2.1'
 
 services:
-  hs_auth:
-    image: hs_auth:latest
+  shops:
+    image: shops:latest
     ports:
       - 8000:80
     env_file:
       - ../../app.env
     volumes:
-      - ../../:/go/src/github.com/unicsmcr/hs_auth
+      - ../../:/go/src/github.com/Hack-the-Crisis-got-milk/Shops
     depends_on:
       mongo:
         condition: service_healthy
@@ -52,7 +52,7 @@ services:
       - internal
 
 networks:
-  # internal network for hs_auth services
+  # internal network for shops services
   internal:
     driver: bridge
     name: internal

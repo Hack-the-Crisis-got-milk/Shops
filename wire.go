@@ -4,6 +4,7 @@ package main
 
 import (
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
+	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers"
 	"github.com/Hack-the-Crisis-got-milk/Shops/utils"
 	"github.com/google/wire"
@@ -15,6 +16,8 @@ func InitializeServer() (Server, error) {
 		routers.NewMainRouter,
 		environment.NewEnv,
 		utils.NewLogger,
+		utils.NewDatabase,
+		repositories.NewItemGroupRepository,
 	)
 	return Server{}, nil
 }
