@@ -19,6 +19,7 @@ func InitializeServer() (Server, error) {
 		utils.NewLogger,
 		v1.NewAPIV1Router,
 		config.NewAppConfig,
+		utils.NewGoogleMapsClient,
 	)
 	return Server{}, nil
 }

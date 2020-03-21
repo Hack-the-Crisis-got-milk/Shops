@@ -19,10 +19,10 @@ type mainRouter struct {
 }
 
 // NewMainRouter creates a new MainRouter
-func NewMainRouter(logger *zap.Logger, apiV1  v1.APIV1Router) MainRouter {
+func NewMainRouter(logger *zap.Logger, apiV1 v1.APIV1Router) MainRouter {
 	return &mainRouter{
 		logger: logger,
-		apiV1: apiV1,
+		apiV1:  apiV1,
 	}
 }
 

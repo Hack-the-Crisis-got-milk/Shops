@@ -25,7 +25,11 @@ func InitializeServer() (Server, error) {
 	if err != nil {
 		return Server{}, err
 	}
-	apiv1Router := v1.NewAPIV1Router(logger, env, appConfig)
+	client, err := utils.NewGoogleMapsClient(env)
+	if err != nil {
+		return Server{}, err
+	}
+	apiv1Router := v1.NewAPIV1Router(logger, env, appConfig, client)
 	mainRouter := routers.NewMainRouter(logger, apiv1Router)
 	server := NewServer(mainRouter, env)
 	return server, nil
