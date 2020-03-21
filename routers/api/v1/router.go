@@ -1,10 +1,10 @@
 package v1
 
 import (
-	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
-	"github.com/gin-gonic/gin"
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
+	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers/models"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
 
@@ -13,20 +13,21 @@ type APIV1Router interface {
 	models.Router
 	GetNearbyShops(*gin.Context)
 	GetAllShops(*gin.Context)
+	GetItemGroups(*gin.Context)
 }
 
 type apiV1Router struct {
 	models.BaseRouter
-	logger       *zap.Logger
-	env          *environment.Env
+	logger        *zap.Logger
+	env           *environment.Env
 	itemGroupRepo *repositories.ItemGroupRepository
 }
 
 // NewAPIV1Router creates a APIV1Router
 func NewAPIV1Router(logger *zap.Logger, env *environment.Env, itemGroupRepo *repositories.ItemGroupRepository) APIV1Router {
 	return &apiV1Router{
-		logger:       logger,
-		env:          env,
+		logger:        logger,
+		env:           env,
 		itemGroupRepo: itemGroupRepo,
 	}
 }
