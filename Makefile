@@ -43,7 +43,7 @@ up: build-docker setup-network
 
 # starts the app and MongoDB in docker containers for dev environment
 up-dev: export ENVIRONMENT=dev
-up-dev: export PORT=8100
+up-dev: export PORT=8010
 up-dev: export MONGO_HOST=127.0.0.1:8012
 up-dev: vet setup-network
 	@echo "=============starting shops (dev)============="

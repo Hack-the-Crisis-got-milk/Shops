@@ -10,6 +10,6 @@ type Shop struct {
 	Name    string   `json:"name"`
 	Loc     Location `json:"loc"`
 	Address string   `json:"address"`
-	OpenNow string   `json:"open_now"`
+	OpenNow bool     `json:"open_now"`
 	Photo   string   `json:"photo"`
 }
