@@ -52,9 +52,11 @@ func newGetNearbyShopsRequest(ctx *gin.Context) (getNearbyShopsRequest, error) {
 		}
 	}
 
-	err = json.Unmarshal([]byte(ctx.Query(FILTERS_KEY)), &request.Filters)
-	if err != nil {
-		return getNearbyShopsRequest{}, errors.New(fmt.Sprintf("could not convert %s to %T", FILTERS_KEY, request.Filters))
+	if ctx.Query(FILTERS_KEY) != "" {
+		err = json.Unmarshal([]byte(ctx.Query(FILTERS_KEY)), &request.Filters)
+		if err != nil {
+			return getNearbyShopsRequest{}, errors.New(fmt.Sprintf("could not convert %s to %T", FILTERS_KEY, request.Filters))
+		}
 	}
 
 	return request, nil
@@ -71,7 +73,6 @@ func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.Lat
 		Type:    placeType,
 	})
 
-	r.logger.Info("response", zap.Any("shops", response))
 	if err != nil {
 		return nil, err
 	}
