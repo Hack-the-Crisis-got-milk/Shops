@@ -1,0 +1,8 @@
+# Store non-sensitive project configuration here
+item_groups:
+  - id: "milk"
+    name: "Milk"
+  - id: "cereal"
+    name: "Cereal"
+  - id: "meat"
+    name: "Meat"

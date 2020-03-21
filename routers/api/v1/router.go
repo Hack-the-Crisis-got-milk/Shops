@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/Hack-the-Crisis-got-milk/Shops/config"
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
 	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers/models"
@@ -20,14 +21,16 @@ type apiV1Router struct {
 	models.BaseRouter
 	logger        *zap.Logger
 	env           *environment.Env
+	cfg           *config.AppConfig
 	itemGroupRepo *repositories.ItemGroupRepository
 }
 
 // NewAPIV1Router creates a APIV1Router
-func NewAPIV1Router(logger *zap.Logger, env *environment.Env, itemGroupRepo *repositories.ItemGroupRepository) APIV1Router {
+func NewAPIV1Router(logger *zap.Logger, env *environment.Env, cfg *config.AppConfig, itemGroupRepo *repositories.ItemGroupRepository) APIV1Router {
 	return &apiV1Router{
 		logger:        logger,
 		env:           env,
+		cfg:           cfg,
 		itemGroupRepo: itemGroupRepo,
 	}
 }
@@ -35,6 +38,11 @@ func NewAPIV1Router(logger *zap.Logger, env *environment.Env, itemGroupRepo *rep
 // RegisterRoutes registers all of the API's (v1) routes to the given router group
 func (r apiV1Router) RegisterRoutes(routerGroup *gin.RouterGroup) {
 	routerGroup.GET("/", r.Heartbeat)
-	routerGroup.GET("/shops", r.GetAllShops)
-	routerGroup.GET("/shops/nearby", r.GetNearbyShops)
+
+	shopsGroup := routerGroup.Group("/shops")
+	shopsGroup.GET("/", r.GetAllShops)
+	shopsGroup.GET("/nearby", r.GetNearbyShops)
+
+	itemGroupsGroup := routerGroup.Group("/itemgroups")
+	itemGroupsGroup.GET("/", r.GetItemGroups)
 }

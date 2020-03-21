@@ -1,10 +1,6 @@
 package entities
 
-import (
-	"go.mongodb.org/mongo-driver/bson/primitive"
-)
-
 type ItemGroup struct {
-	ID   primitive.ObjectID `json:"_id" bson:"_id"`
-	Name string             `json:"name"  bson:"name" validate:"required"`
+	ID   string `json:"id" bson:"id" yaml:"id"`
+	Name string `json:"name"  bson:"name" validate:"required" yaml:"name"`
 }

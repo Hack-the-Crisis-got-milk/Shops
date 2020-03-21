@@ -3,6 +3,7 @@
 package main
 
 import (
+	"github.com/Hack-the-Crisis-got-milk/Shops/config"
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
 	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers"
@@ -20,6 +21,7 @@ func InitializeServer() (Server, error) {
 		utils.NewDatabase,
 		repositories.NewItemGroupRepository,
 		v1.NewAPIV1Router,
+		config.NewAppConfig,
 	)
 	return Server{}, nil
 }

@@ -6,6 +6,7 @@
 package main
 
 import (
+	"github.com/Hack-the-Crisis-got-milk/Shops/config"
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
 	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers"
@@ -21,6 +22,10 @@ func InitializeServer() (Server, error) {
 		return Server{}, err
 	}
 	env := environment.NewEnv(logger)
+	appConfig, err := config.NewAppConfig(env)
+	if err != nil {
+		return Server{}, err
+	}
 	database, err := utils.NewDatabase(logger, env)
 	if err != nil {
 		return Server{}, err
@@ -29,7 +34,7 @@ func InitializeServer() (Server, error) {
 	if err != nil {
 		return Server{}, err
 	}
-	apiv1Router := v1.NewAPIV1Router(logger, env, itemGroupRepository)
+	apiv1Router := v1.NewAPIV1Router(logger, env, appConfig, itemGroupRepository)
 	mainRouter := routers.NewMainRouter(logger, apiv1Router)
 	server := NewServer(mainRouter, env)
 	return server, nil

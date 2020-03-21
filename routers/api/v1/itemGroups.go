@@ -6,5 +6,7 @@ import (
 )
 
 func (r *apiV1Router) GetItemGroups(ctx *gin.Context) {
-	ctx.JSON(http.StatusNotImplemented, "Not implemented!")
+	ctx.JSON(http.StatusOK, getItemGroupsResponse{
+		ItemGroups: r.cfg.ItemGroups,
+	})
 }
