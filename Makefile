@@ -37,7 +37,7 @@ setup-network:
 	docker network create --driver bridge hacker_suite || echo "This is most likely fine, it just means that the network has already been created"
 
 # starts the app and MongoDB in docker containers
-up: vet build-docker setup-network
+up: build-docker setup-network
 	@echo "=============starting shops============="
 	docker-compose -f $(prod_docker_compose_file) up -d
 

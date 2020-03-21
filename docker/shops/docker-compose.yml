@@ -4,7 +4,7 @@ services:
   shops:
     image: shops:latest
     ports:
-      - 8010:80
+      - 8010:8010
     env_file:
       - ../../app.env
     volumes:
