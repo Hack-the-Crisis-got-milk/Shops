@@ -3,7 +3,6 @@ package v1
 import (
 	"github.com/Hack-the-Crisis-got-milk/Shops/config"
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
-	"github.com/Hack-the-Crisis-got-milk/Shops/repositories"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers/models"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -19,19 +18,17 @@ type APIV1Router interface {
 
 type apiV1Router struct {
 	models.BaseRouter
-	logger        *zap.Logger
-	env           *environment.Env
-	cfg           *config.AppConfig
-	itemGroupRepo *repositories.ItemGroupRepository
+	logger *zap.Logger
+	env    *environment.Env
+	cfg    *config.AppConfig
 }
 
 // NewAPIV1Router creates a APIV1Router
-func NewAPIV1Router(logger *zap.Logger, env *environment.Env, cfg *config.AppConfig, itemGroupRepo *repositories.ItemGroupRepository) APIV1Router {
+func NewAPIV1Router(logger *zap.Logger, env *environment.Env, cfg *config.AppConfig) APIV1Router {
 	return &apiV1Router{
-		logger:        logger,
-		env:           env,
-		cfg:           cfg,
-		itemGroupRepo: itemGroupRepo,
+		logger: logger,
+		env:    env,
+		cfg:    cfg,
 	}
 }
 

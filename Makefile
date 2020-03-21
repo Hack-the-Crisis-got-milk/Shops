@@ -4,7 +4,6 @@ export $(shell sed 's/=.*//' app.env)
 export GO111MODULE=on
 
 prod_docker_compose_file=./docker/shops/docker-compose.yml
-dev_docker_compose_file=./docker/shops_dev/docker-compose.yml
 
 default: build test
 
@@ -44,20 +43,15 @@ up: vet build-docker setup-network
 
 # starts the app and MongoDB in docker containers for dev environment
 up-dev: export ENVIRONMENT=dev
-up-dev: export PORT=8000
-up-dev: export MONGO_HOST=127.0.0.1:8002
+up-dev: export PORT=8100
+up-dev: export MONGO_HOST=127.0.0.1:8012
 up-dev: vet setup-network
 	@echo "=============starting shops (dev)============="
-	docker-compose -f $(dev_docker_compose_file) up -d
 	refresh run
 
 # prints the logs from all containers
 logs:
-ifeq ($(ENV), dev)
-	docker-compose -f $(dev_docker_compose_file) logs -f
-else
 	docker-compose -f $(prod_docker_compose_file) logs -f
-endif
 
 # prints the logs only from the go app
 logs-app:
@@ -65,16 +59,11 @@ logs-app:
 
 # prints the logs only from the database
 logs-db:
-ifeq ($(ENV), dev)
-	docker-compose -f $(dev_docker_compose_file) logs -f mongo
-else
 	docker-compose -f $(prod_docker_compose_file) logs -f mongo
-endif
 
 # shuts down the containers
 down:
 	docker-compose -f $(prod_docker_compose_file) down
-	docker-compose -f $(dev_docker_compose_file) down
 
 # cleans up unused images, networks and containers
 # WARNING: this will delete ALL docker images on the system
