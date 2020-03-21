@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 type Client struct {
@@ -66,6 +67,8 @@ func NewClient(logger *zap.Logger, cfg *config.AppConfig) (*Client, error) {
 }
 
 func (c *Client) GetFeedbackForShops(shopIds []string) (map[string][]entities.Feedback, error) {
+	start := time.Now()
+
 	res, err := c.sendHttpRequest(feedbackRequests[GET_FEEDBACK_FOR_SHOPS_ACTIVITY], map[string]interface{}{
 		"shopIds": shopIds,
 	}, nil)
@@ -86,11 +89,13 @@ func (c *Client) GetFeedbackForShops(shopIds []string) (map[string][]entities.Fe
 		return nil, err
 	}
 
+	fmt.Println("get feedback for shops time: ", time.Now().Sub(start))
+
 	return feedbackMap, nil
 }
 
 func (c *Client) sendHttpRequest(req request, urlParams map[string]interface{}, body io.Reader) (*http.Response, error) {
-	request, err := http.NewRequest(req.method, c.apiEndpoint + req.path + c.constructUrlParams(urlParams), body)
+	request, err := http.NewRequest(req.method, c.apiEndpoint+req.path+c.constructUrlParams(urlParams), body)
 	if err != nil {
 		return nil, err
 	}
@@ -104,20 +109,20 @@ func (c *Client) constructUrlParams(params map[string]interface{}) string {
 	}
 
 	urlParams := "?"
-	for key, value := range(params) {
+	for key, value := range params {
 		jsonValue, err := json.Marshal(value)
 		if err != nil {
-			c.logger.Error(fmt.Sprintf("could not marshal %s with value %s to JSON", key , value), zap.Error(err))
+			c.logger.Error(fmt.Sprintf("could not marshal %s with value %s to JSON", key, value), zap.Error(err))
 		} else {
 			urlParams += fmt.Sprintf("%s=%s&", key, url.QueryEscape(string(jsonValue)))
 		}
 	}
 
-	return urlParams[:len(urlParams) - 1]
+	return urlParams[:len(urlParams)-1]
 }
 
 func convertGetFeedbackForShopsResponseToFeedbackMap(response []byte) (map[string][]entities.Feedback, error) {
-	var wrapper struct{
+	var wrapper struct {
 		Response map[string][]entities.Feedback `json:"response"`
 	}
 

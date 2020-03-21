@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/Hack-the-Crisis-got-milk/Shops/entities"
 	"github.com/gin-gonic/gin"
@@ -80,7 +81,48 @@ func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.Lat
 	return entities.ConvertPlacesSearchResponseToShops(response, startpoint), nil
 }
 
+func (r *apiV1Router) filterOutShops(shops []entities.Shop, filters []entities.Filter) ([]entities.Shop, error) {
+	shopIds := []string{}
+	for _, shop := range shops {
+		shopIds = append(shopIds, shop.ID)
+	}
+
+	feedback, err := r.fClient.GetFeedbackForShops(shopIds)
+	if err != nil {
+		return nil, err
+	}
+
+	filteredShops := []entities.Shop{}
+	for _, shop := range shops {
+		if shopIsSuitable(feedback[shop.ID], filters, shop.ID) {
+			filteredShops = append(filteredShops, shop)
+		}
+	}
+
+	return filteredShops, nil
+}
+
+func shopIsSuitable(feedback []entities.Feedback, filters []entities.Filter, shopID string) bool {
+	for _, filter := range filters {
+		feedbackFound := false
+		for _, f := range feedback {
+			if f.LessThan(filter) {
+				return false
+			}
+			if f.IsForFilter(filter) {
+				feedbackFound = true
+			}
+		}
+		if !feedbackFound && filter.Type != entities.BusynessFilter {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (r *apiV1Router) GetNearbyShops(ctx *gin.Context) {
+	start := time.Now()
 	request, err := newGetNearbyShopsRequest(ctx)
 	if err != nil {
 		r.logger.Debug("could not parse GetNearbyShops request", zap.Error(err))
@@ -98,6 +140,17 @@ func (r *apiV1Router) GetNearbyShops(ctx *gin.Context) {
 	}
 
 	shops = append(shops, pharmacies...)
+
+	if len(request.Filters) > 0 {
+		shops, err = r.filterOutShops(shops, request.Filters)
+		if err != nil {
+			r.logger.Error("could not filter out shops", zap.Error(err))
+			ctx.JSON(http.StatusInternalServerError, newErrorResponse("something went wrong", err))
+			return
+		}
+	}
+
+	fmt.Println("get nearby shops time: ", time.Now().Sub(start))
 
 	ctx.JSON(http.StatusOK, getNearbyShopsResponse{
 		Shops: shops,

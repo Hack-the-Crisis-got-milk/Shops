@@ -29,9 +29,6 @@ type apiV1Router struct {
 
 // NewAPIV1Router creates a APIV1Router
 func NewAPIV1Router(logger *zap.Logger, env *environment.Env, cfg *config.AppConfig, gClient *maps.Client, fClient *feedback.Client) APIV1Router {
-	feedbacks, err := fClient.GetFeedbackForShops([]string{"1", "2"})
-	logger.Info("GetFeedbackForShops", zap.Any("feedbacks", feedbacks), zap.Error(err))
-
 	return &apiV1Router{
 		logger:  logger,
 		env:     env,

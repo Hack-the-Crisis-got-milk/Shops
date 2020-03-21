@@ -11,28 +11,26 @@ const DefaultEnvVarValue = "not set"
 
 // names of env vars
 const (
-	Environment         = "ENVIRONMENT"
-	Port                = "PORT"
-	MongoHost           = "MONGO_HOST"
-	MongoDatabase       = "MONGO_DATABASE"
-	MongoUser           = "MONGO_USER"
-	MongoPassword       = "MONGO_PASSWORD"
-	GooglePlacesAPIKey  = "GOOGLE_PLACES_API_KEY"
-	FeedbackAPIEndpoint = "FEEDBACK_API_ENDPOINT"
+	Environment        = "ENVIRONMENT"
+	Port               = "PORT"
+	MongoHost          = "MONGO_HOST"
+	MongoDatabase      = "MONGO_DATABASE"
+	MongoUser          = "MONGO_USER"
+	MongoPassword      = "MONGO_PASSWORD"
+	GooglePlacesAPIKey = "GOOGLE_PLACES_API_KEY"
 )
 
 // NewEnv creates an Env with loaded environment variables
 func NewEnv(logger *zap.Logger) *Env {
 	env := Env{
 		vars: map[string]string{
-			Environment:         valueOfEnvVar(logger, Environment),
-			Port:                valueOfEnvVar(logger, Port),
-			MongoHost:           valueOfEnvVar(logger, MongoHost),
-			MongoDatabase:       valueOfEnvVar(logger, MongoDatabase),
-			MongoUser:           valueOfEnvVar(logger, MongoUser),
-			MongoPassword:       valueOfEnvVar(logger, MongoPassword),
-			GooglePlacesAPIKey:  valueOfEnvVar(logger, GooglePlacesAPIKey),
-			FeedbackAPIEndpoint: valueOfEnvVar(logger, FeedbackAPIEndpoint),
+			Environment:        valueOfEnvVar(logger, Environment),
+			Port:               valueOfEnvVar(logger, Port),
+			MongoHost:          valueOfEnvVar(logger, MongoHost),
+			MongoDatabase:      valueOfEnvVar(logger, MongoDatabase),
+			MongoUser:          valueOfEnvVar(logger, MongoUser),
+			MongoPassword:      valueOfEnvVar(logger, MongoPassword),
+			GooglePlacesAPIKey: valueOfEnvVar(logger, GooglePlacesAPIKey),
 		},
 	}
 	return &env
