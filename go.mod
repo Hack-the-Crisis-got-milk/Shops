@@ -14,6 +14,7 @@ require (
 	go.uber.org/config v1.3.1
 	go.uber.org/multierr v1.5.0 // indirect
 	go.uber.org/zap v1.10.0
+	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a
 	golang.org/x/time v0.0.0-20191024005414-555d28b269f0 // indirect
 	googlemaps.github.io/maps v0.0.0-20200130222743-aef6b08443c7
 )

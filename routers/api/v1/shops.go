@@ -100,7 +100,7 @@ func (r *apiV1Router) GetNearbyShops(ctx *gin.Context) {
 	shops = append(shops, pharmacies...)
 
 	ctx.JSON(http.StatusOK, getNearbyShopsResponse{
-		Shops:    shops,
+		Shops: shops,
 	})
 }
 

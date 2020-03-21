@@ -3,6 +3,7 @@ package v1
 import (
 	"github.com/Hack-the-Crisis-got-milk/Shops/config"
 	"github.com/Hack-the-Crisis-got-milk/Shops/environment"
+	"github.com/Hack-the-Crisis-got-milk/Shops/gateway/feedback"
 	"github.com/Hack-the-Crisis-got-milk/Shops/routers/models"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -23,15 +24,20 @@ type apiV1Router struct {
 	env     *environment.Env
 	cfg     *config.AppConfig
 	gClient *maps.Client
+	fClient *feedback.Client
 }
 
 // NewAPIV1Router creates a APIV1Router
-func NewAPIV1Router(logger *zap.Logger, env *environment.Env, cfg *config.AppConfig, gClient *maps.Client) APIV1Router {
+func NewAPIV1Router(logger *zap.Logger, env *environment.Env, cfg *config.AppConfig, gClient *maps.Client, fClient *feedback.Client) APIV1Router {
+	feedbacks, err := fClient.GetFeedbackForShops([]string{"1", "2"})
+	logger.Info("GetFeedbackForShops", zap.Any("feedbacks", feedbacks), zap.Error(err))
+
 	return &apiV1Router{
 		logger:  logger,
 		env:     env,
 		cfg:     cfg,
 		gClient: gClient,
+		fClient: fClient,
 	}
 }
 

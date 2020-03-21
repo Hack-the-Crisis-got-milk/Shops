@@ -15,7 +15,8 @@ var (
 
 // AppConfig is a struct to store non-private configuration for the project
 type AppConfig struct {
-	ItemGroups []entities.ItemGroup `yaml:"item_groups"`
+	ItemGroups              []entities.ItemGroup `yaml:"item_groups"`
+	FeedbackServiceEndpoint string               `yaml:"feedback_endpoint"`
 }
 
 // NewAppConfig loads the project config from the config files based on the environment

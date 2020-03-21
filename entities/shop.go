@@ -4,11 +4,6 @@ import (
 	"googlemaps.github.io/maps"
 )
 
-type Location struct {
-	Lat  float64 `json:"lat"`
-	Long float64 `json:"long"`
-}
-
 type Shop struct {
 	ID       string      `json:"id"`
 	Name     string      `json:"name"`

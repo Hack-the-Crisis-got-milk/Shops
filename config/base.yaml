@@ -42,3 +42,4 @@ item_groups:
     name: "Bandaids"
   - id: "lozenge"
     name: "Lozenge"
+feedback_endpoint: "https://secret-mountain-57394.herokuapp.com"
