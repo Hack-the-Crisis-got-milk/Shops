@@ -61,7 +61,7 @@ func newGetNearbyShopsRequest(ctx *gin.Context) (getNearbyShopsRequest, error) {
 	return request, nil
 }
 
-func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.LatLng, radius uint, searchKeyword string, placeType maps.PlaceType) ([]entities.Shop, error) {
+func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.LatLng, radius uint, searchKeyword string, placeType maps.PlaceType, shopType entities.ShopType) ([]entities.Shop, error) {
 	response, err := r.gClient.NearbySearch(ctx, &maps.NearbySearchRequest{
 		Location: &maps.LatLng{
 			Lat: startpoint.Lat,
@@ -76,7 +76,7 @@ func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.Lat
 		return nil, err
 	}
 
-	return entities.ConvertPlacesSearchResponseToShops(ctx, r.cfg.AppURL, response, startpoint, r.gClient), nil
+	return entities.ConvertPlacesSearchResponseToShops(ctx, r.cfg.AppURL, response, startpoint, r.gClient, shopType), nil
 }
 
 func (r *apiV1Router) filterOutShops(shops []entities.Shop, filters []entities.Filter) ([]entities.Shop, error) {
@@ -127,11 +127,11 @@ func (r *apiV1Router) GetNearbyShops(ctx *gin.Context) {
 		return
 	}
 
-	shops, err := r.getShopsWithinRadius(ctx, request.Loc, uint(request.Radius), GROCERY_STORE_SEARCH_KEYWORD, "grocery_or_supermarket")
+	shops, err := r.getShopsWithinRadius(ctx, request.Loc, uint(request.Radius), GROCERY_STORE_SEARCH_KEYWORD, "grocery_or_supermarket", entities.GroceryShop)
 	if err != nil {
 		r.logger.Error("could not fetch grocery stores", zap.Error(err))
 	}
-	pharmacies, err := r.getShopsWithinRadius(ctx, request.Loc, uint(request.Radius), PHARMACY_SEARCH_KEYWORD, maps.PlaceTypePharmacy)
+	pharmacies, err := r.getShopsWithinRadius(ctx, request.Loc, uint(request.Radius), PHARMACY_SEARCH_KEYWORD, maps.PlaceTypePharmacy, entities.Pharmacy)
 	if err != nil {
 		r.logger.Error("could not fetch pharmacies", zap.Error(err))
 	}
