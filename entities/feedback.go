@@ -35,7 +35,7 @@ type Feedback struct {
 }
 
 func (f Feedback) LessThan(filter Filter) bool {
-	switch{
+	switch {
 	case f.Type == BusynessFeedbackType && filter.Type == BusynessFilter:
 		return busynessValues[BusynessValue(f.Value)] > busynessValues[BusynessValue(filter.Value)]
 	case f.Type == AvailabilityFeedbackType && filter.Type == AvailableFilter:

@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"time"
 )
 
 type Client struct {
@@ -67,8 +66,6 @@ func NewClient(logger *zap.Logger, cfg *config.AppConfig) (*Client, error) {
 }
 
 func (c *Client) GetFeedbackForShops(shopIds []string) (map[string][]entities.Feedback, error) {
-	start := time.Now()
-
 	res, err := c.sendHttpRequest(feedbackRequests[GET_FEEDBACK_FOR_SHOPS_ACTIVITY], map[string]interface{}{
 		"shopIds": shopIds,
 	}, nil)
@@ -88,8 +85,6 @@ func (c *Client) GetFeedbackForShops(shopIds []string) (map[string][]entities.Fe
 		c.logger.Error("could not parse response from GetFeedbackForShops", zap.String("resposne", string(body)), zap.Error(err))
 		return nil, err
 	}
-
-	fmt.Println("get feedback for shops time: ", time.Now().Sub(start))
 
 	return feedbackMap, nil
 }

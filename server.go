@@ -17,6 +17,8 @@ func NewServer(mainRouter routers.MainRouter, env *environment.Env) Server {
 		Port:   env.Get(environment.Port),
 	}
 
+	server.Static("static", "static")
+
 	mainRouter.RegisterRoutes(server.Group("/"))
 
 	return server

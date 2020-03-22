@@ -4,14 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
-	"strconv"
-	"time"
-
 	"github.com/Hack-the-Crisis-got-milk/Shops/entities"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"googlemaps.github.io/maps"
+	"net/http"
+	"strconv"
 )
 
 const LNG_KEY = "lng"
@@ -78,7 +76,7 @@ func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.Lat
 		return nil, err
 	}
 
-	return entities.ConvertPlacesSearchResponseToShops(response, startpoint), nil
+	return entities.ConvertPlacesSearchResponseToShops(ctx, response, startpoint, r.gClient), nil
 }
 
 func (r *apiV1Router) filterOutShops(shops []entities.Shop, filters []entities.Filter) ([]entities.Shop, error) {
@@ -122,7 +120,6 @@ func shopIsSuitable(feedback []entities.Feedback, filters []entities.Filter, sho
 }
 
 func (r *apiV1Router) GetNearbyShops(ctx *gin.Context) {
-	start := time.Now()
 	request, err := newGetNearbyShopsRequest(ctx)
 	if err != nil {
 		r.logger.Debug("could not parse GetNearbyShops request", zap.Error(err))
@@ -149,8 +146,6 @@ func (r *apiV1Router) GetNearbyShops(ctx *gin.Context) {
 			return
 		}
 	}
-
-	fmt.Println("get nearby shops time: ", time.Now().Sub(start))
 
 	ctx.JSON(http.StatusOK, getNearbyShopsResponse{
 		Shops: shops,
