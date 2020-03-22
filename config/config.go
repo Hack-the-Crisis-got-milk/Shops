@@ -17,6 +17,7 @@ var (
 type AppConfig struct {
 	ItemGroups              []entities.ItemGroup `yaml:"item_groups"`
 	FeedbackServiceEndpoint string               `yaml:"feedback_endpoint"`
+	AppURL                  string               `yaml:"app_url"`
 }
 
 // NewAppConfig loads the project config from the config files based on the environment

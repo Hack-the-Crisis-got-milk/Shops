@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-const IMAGES_PATH = "./static/images/"
+const IMAGES_PATH = "static/images/"
 
 type Shop struct {
 	ID       string      `json:"id"`
@@ -20,10 +20,10 @@ type Shop struct {
 	Distance uint        `json:"distance"`
 }
 
-func ConvertPlacesSearchResponseToShops(ctx context.Context, response maps.PlacesSearchResponse, startLocation maps.LatLng, gClient *maps.Client) []Shop {
+func ConvertPlacesSearchResponseToShops(ctx context.Context, appUrl string, response maps.PlacesSearchResponse, startLocation maps.LatLng, gClient *maps.Client) []Shop {
 	shops := []Shop{}
 	for _, response := range response.Results {
-		photo, _ := getShopPhoto(ctx, response.PlaceID, gClient, response.Photos)
+		photo, _ := getShopPhoto(ctx, appUrl, response.PlaceID, gClient, response.Photos)
 
 		shop := Shop{
 			ID:       response.PlaceID,
@@ -32,10 +32,6 @@ func ConvertPlacesSearchResponseToShops(ctx context.Context, response maps.Place
 			Address:  response.FormattedAddress,
 			Photo:    photo,
 			Distance: 0,
-		}
-
-		if len(response.Photos) > 0 {
-			shop.Photo = response.Photos[0].PhotoReference
 		}
 
 		if response.OpeningHours != nil {
@@ -48,12 +44,12 @@ func ConvertPlacesSearchResponseToShops(ctx context.Context, response maps.Place
 	return shops
 }
 
-func getShopPhoto(ctx context.Context, shopId string, gClient *maps.Client, photos []maps.Photo) (string, error) {
+func getShopPhoto(ctx context.Context, appUrl, shopId string, gClient *maps.Client, photos []maps.Photo) (string, error) {
 	os.MkdirAll(IMAGES_PATH, os.ModePerm)
 	_, err := os.Open(IMAGES_PATH + fmt.Sprintf("%s.jpg", shopId))
 	if err == nil {
 		fmt.Println("picture found")
-		return IMAGES_PATH + fmt.Sprintf("%s.jpg", shopId), nil
+		return appUrl + IMAGES_PATH + fmt.Sprintf("%s.jpg", shopId), nil
 	}
 
 	if len(photos) == 0 {
@@ -75,7 +71,7 @@ func getShopPhoto(ctx context.Context, shopId string, gClient *maps.Client, phot
 		return "", err
 	}
 
-	f, err := os.Create("./static/images/" + shopId + ".jpg")
+	f, err := os.Create(IMAGES_PATH + shopId + ".jpg")
 	if err != nil {
 		fmt.Println(err)
 		return "", err
@@ -83,5 +79,5 @@ func getShopPhoto(ctx context.Context, shopId string, gClient *maps.Client, phot
 	defer f.Close()
 	jpeg.Encode(f, img, nil)
 
-	return IMAGES_PATH + fmt.Sprintf("%s.jpg", shopId), nil
+	return appUrl + IMAGES_PATH + fmt.Sprintf("%s.jpg", shopId), nil
 }

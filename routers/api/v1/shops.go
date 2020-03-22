@@ -76,7 +76,7 @@ func (r *apiV1Router) getShopsWithinRadius(ctx *gin.Context, startpoint maps.Lat
 		return nil, err
 	}
 
-	return entities.ConvertPlacesSearchResponseToShops(ctx, response, startpoint, r.gClient), nil
+	return entities.ConvertPlacesSearchResponseToShops(ctx, r.cfg.AppURL, response, startpoint, r.gClient), nil
 }
 
 func (r *apiV1Router) filterOutShops(shops []entities.Shop, filters []entities.Filter) ([]entities.Shop, error) {

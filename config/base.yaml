@@ -81,3 +81,4 @@ item_groups:
     icon: "https://cdn0.iconfinder.com/data/icons/health-26/64/hygienic_mask-hygienic-mask-virus-512.png"
     shop_type: "pharmacy"
 feedback_endpoint: "https://secret-mountain-57394.herokuapp.com"
+app_url: "http://ec2-18-130-190-158.eu-west-2.compute.amazonaws.com:8010/"
